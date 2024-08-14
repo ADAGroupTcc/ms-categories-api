@@ -3,12 +3,12 @@ package config
 import (
 	"context"
 
-	"github.com/ADAGroupTcc/ms-users-api/internal/http/health"
-	handler "github.com/ADAGroupTcc/ms-users-api/internal/http/users"
-	repository "github.com/ADAGroupTcc/ms-users-api/internal/repositories/users"
-	healthService "github.com/ADAGroupTcc/ms-users-api/internal/services/health"
-	service "github.com/ADAGroupTcc/ms-users-api/internal/services/users"
-	"github.com/ADAGroupTcc/ms-users-api/pkg/mongorm"
+	handler "github.com/ADAGroupTcc/ms-categories-api/internal/http/categories"
+	"github.com/ADAGroupTcc/ms-categories-api/internal/http/health"
+	repository "github.com/ADAGroupTcc/ms-categories-api/internal/repositories/categories"
+	service "github.com/ADAGroupTcc/ms-categories-api/internal/services/categories"
+	healthService "github.com/ADAGroupTcc/ms-categories-api/internal/services/health"
+	"github.com/ADAGroupTcc/ms-categories-api/pkg/mongorm"
 )
 
 type Dependencies struct {
