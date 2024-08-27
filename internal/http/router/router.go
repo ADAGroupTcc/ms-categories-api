@@ -10,7 +10,8 @@ func SetupRouter(dependencies *config.Dependencies) *echo.Echo {
 
 	e.GET("/health", dependencies.HealthHandler.Check)
 
-	// v1 := e.Group("/v1")
+	v1 := e.Group("/v1")
+	v1.GET("/categories/:id", dependencies.CategoriesHandler.GetCategoriesById)
 
 	return e
 }
