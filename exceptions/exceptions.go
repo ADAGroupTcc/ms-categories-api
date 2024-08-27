@@ -17,6 +17,6 @@ var (
 	ErrInvalidID             = fmt.Errorf("%s: invalid ID", prefix)
 
 	// Database related errors
-	ErrUserNotFound    = fmt.Errorf("%s: user not found", prefix)
-	ErrDatabaseFailure = fmt.Errorf("%s: database failure", prefix)
+	ErrCategoryNotFound = fmt.Errorf("%s: category not found", prefix)
+	ErrDatabaseFailure  = fmt.Errorf("%s: database failure", prefix)
 )

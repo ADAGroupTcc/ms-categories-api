@@ -30,12 +30,10 @@ func HandleExceptions(err error) ErrorResponse {
 			Message: customErr.Err.Error(),
 		}
 	case
-		ErrInvalidFirstName,
-		ErrInvalidLastName,
-		ErrInvalidEmail,
-		ErrInvalidCPF,
-		ErrInvalidCategories,
-		ErrUserAlreadyExists,
+		ErrInvalidClassification,
+		ErrInvalidDescription,
+		ErrInvalidName,
+		ErrCategoryAlreadyExists,
 		ErrInvalidID:
 		return ErrorResponse{
 			Code:    http.StatusBadRequest,
