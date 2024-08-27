@@ -1,6 +1,8 @@
 package categories
 
 import (
+	"net/http"
+
 	"github.com/ADAGroupTcc/ms-categories-api/internal/services/categories"
 	"github.com/labstack/echo/v4"
 )
@@ -20,5 +22,17 @@ func New(categoriesService categories.Service) Handler {
 	}
 }
 
-func (h *categoriesHandler) GetCategoryById(c echo.Context) error
-func (h *categoriesHandler) List(c echo.Context) error
+func (h *categoriesHandler) GetCategoryById(c echo.Context) error {
+	ctx := c.Request().Context()
+	userId := c.Param("id")
+	res, err := h.categoriesService.GetCategoryById(ctx, userId)
+	if err != nil {
+		return err
+	}
+
+	return c.JSON(http.StatusOK, res)
+}
+
+func (h *categoriesHandler) List(c echo.Context) error {
+	return nil
+}

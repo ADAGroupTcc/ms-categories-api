@@ -4,6 +4,7 @@ import (
 	"context"
 	"errors"
 
+	"github.com/ADAGroupTcc/ms-categories-api/exceptions"
 	"github.com/ADAGroupTcc/ms-categories-api/internal/domain"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
@@ -31,12 +32,17 @@ func (r *categoriesRepository) GetCategoryById(ctx context.Context, id primitive
 	err := category.Read(ctx, r.db, CATEGORY_COLLECTION, bson.M{"_id": id}, &category)
 	if err != nil {
 		if errors.Is(err, mongo.ErrNoDocuments) {
-			return &category, nil
+			return nil, exceptions.New(exceptions.ErrCategoryNotFound, err)
 		}
-		return nil, err
+		return nil, exceptions.New(exceptions.ErrDatabaseFailure, err)
 	}
 	return &category, nil
 }
 
-func (r *categoriesRepository) List(ctx context.Context, limit int, offset int) ([]*domain.Category, error)
-func (r *categoriesRepository) ListByCategoryIds(ctx context.Context, categoryIds []primitive.ObjectID, limit int, offset int) ([]*domain.Category, error)
+func (r *categoriesRepository) List(ctx context.Context, limit int, offset int) ([]*domain.Category, error) {
+	return nil, nil
+}
+
+func (r *categoriesRepository) ListByCategoryIds(ctx context.Context, categoryIds []primitive.ObjectID, limit int, offset int) ([]*domain.Category, error) {
+	return nil, nil
+}

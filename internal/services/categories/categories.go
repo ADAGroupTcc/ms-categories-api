@@ -3,8 +3,10 @@ package categories
 import (
 	"context"
 
+	"github.com/ADAGroupTcc/ms-categories-api/exceptions"
 	"github.com/ADAGroupTcc/ms-categories-api/internal/domain"
 	"github.com/ADAGroupTcc/ms-categories-api/internal/repositories/categories"
+	"go.mongodb.org/mongo-driver/bson/primitive"
 )
 
 type Service interface {
@@ -23,6 +25,18 @@ func New(categoriesRepository categories.Repository) Service {
 	}
 }
 
-func (s *categoriesService) GetCategoryById(ctx context.Context, id string) (*domain.Category, error)
-func (s *categoriesService) List(ctx context.Context, limit int, offset int) (*domain.CategoriesResponse, error)
-func (s *categoriesService) ListByCategoryIds(ctx context.Context, categoryIds []string, limit int, offset int) (*domain.CategoriesResponse, error)
+func (s *categoriesService) GetCategoryById(ctx context.Context, id string) (*domain.Category, error) {
+	parsedId, err := primitive.ObjectIDFromHex(id)
+	if err != nil {
+		return nil, exceptions.New(exceptions.ErrInvalidID, err)
+	}
+	return s.categoriesRepository.GetCategoryById(ctx, parsedId)
+}
+
+func (s *categoriesService) List(ctx context.Context, limit int, offset int) (*domain.CategoriesResponse, error) {
+	return nil, nil
+}
+
+func (s *categoriesService) ListByCategoryIds(ctx context.Context, categoryIds []string, limit int, offset int) (*domain.CategoriesResponse, error) {
+	return nil, nil
+}
