@@ -15,16 +15,15 @@ func BindQueryParams(c echo.Context, queryParams *QueryParams) error {
 }
 
 type QueryParams struct {
-	RawUserIds string `json:"user_ids" query:"user_ids"`
-	UserIDs    []string
-	CategoryID []string `json:"category_id,omitempty" query:"category_id"`
-	Limit      int64    `json:"limit" query:"limit"`
-	Offset     int64    `json:"next_page" query:"next_page"`
+	RawCategoryIds string `query:"category_ids"`
+	CategoryIDs    []string
+	Limit          int64 `query:"limit"`
+	Offset         int64 `query:"next_page"`
 }
 
 func (q *QueryParams) normalize() {
-	q.UserIDs = strings.Split(q.RawUserIds, ",")
-	q.RawUserIds = ""
+	q.CategoryIDs = strings.Split(q.RawCategoryIds, ",")
+	q.RawCategoryIds = ""
 	if q.Limit < 1 {
 		q.Limit = 10
 	}

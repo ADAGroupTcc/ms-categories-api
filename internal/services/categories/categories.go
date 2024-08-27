@@ -1,8 +1,16 @@
 package categories
 
-import "github.com/ADAGroupTcc/ms-categories-api/internal/repositories/categories"
+import (
+	"context"
+
+	"github.com/ADAGroupTcc/ms-categories-api/internal/domain"
+	"github.com/ADAGroupTcc/ms-categories-api/internal/repositories/categories"
+)
 
 type Service interface {
+	GetCategoriesById(ctx context.Context, id string) (*domain.Category, error)
+	List(ctx context.Context, limit int, offset int) (*domain.CategoriesResponse, error)
+	ListByCategoryIds(ctx context.Context, categoryIds []string, limit int, offset int) (*domain.CategoriesResponse, error)
 }
 
 type categoriesService struct {
@@ -14,3 +22,7 @@ func New(categoriesRepository categories.Repository) Service {
 		categoriesRepository,
 	}
 }
+
+func (s *categoriesService) GetCategoriesById(ctx context.Context, id string) (*domain.Category, error)
+func (s *categoriesService) List(ctx context.Context, limit int, offset int) (*domain.CategoriesResponse, error)
+func (s *categoriesService) ListByCategoryIds(ctx context.Context, categoryIds []string, limit int, offset int) (*domain.CategoriesResponse, error)
