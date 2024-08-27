@@ -19,7 +19,7 @@ func HandleExceptions(err error) ErrorResponse {
 	}
 
 	switch customErr.Err {
-	case ErrUserNotFound:
+	case ErrCategoryNotFound:
 		return ErrorResponse{
 			Code:    http.StatusNotFound,
 			Message: customErr.Err.Error(),
