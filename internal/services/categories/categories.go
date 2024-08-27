@@ -8,7 +8,7 @@ import (
 )
 
 type Service interface {
-	GetCategoriesById(ctx context.Context, id string) (*domain.Category, error)
+	GetCategoryById(ctx context.Context, id string) (*domain.Category, error)
 	List(ctx context.Context, limit int, offset int) (*domain.CategoriesResponse, error)
 	ListByCategoryIds(ctx context.Context, categoryIds []string, limit int, offset int) (*domain.CategoriesResponse, error)
 }
@@ -23,6 +23,6 @@ func New(categoriesRepository categories.Repository) Service {
 	}
 }
 
-func (s *categoriesService) GetCategoriesById(ctx context.Context, id string) (*domain.Category, error)
+func (s *categoriesService) GetCategoryById(ctx context.Context, id string) (*domain.Category, error)
 func (s *categoriesService) List(ctx context.Context, limit int, offset int) (*domain.CategoriesResponse, error)
 func (s *categoriesService) ListByCategoryIds(ctx context.Context, categoryIds []string, limit int, offset int) (*domain.CategoriesResponse, error)

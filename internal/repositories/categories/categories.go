@@ -11,7 +11,7 @@ import (
 const CATEGORY_COLLECTION = "categories"
 
 type Repository interface {
-	GetCategoriesById(ctx context.Context, id string) (*domain.Category, error)
+	GetCategoryById(ctx context.Context, id string) (*domain.Category, error)
 	List(ctx context.Context, limit int, offset int) ([]*domain.Category, error)
 	ListByCategoryIds(ctx context.Context, categoryIds []primitive.ObjectID, limit int, offset int) ([]*domain.Category, error)
 }
@@ -24,6 +24,6 @@ func New(db *mongo.Database) Repository {
 	return &categoriesRepository{db}
 }
 
-func (r *categoriesRepository) GetCategoriesById(ctx context.Context, id string) (*domain.Category, error)
+func (r *categoriesRepository) GetCategoryById(ctx context.Context, id string) (*domain.Category, error)
 func (r *categoriesRepository) List(ctx context.Context, limit int, offset int) ([]*domain.Category, error)
 func (r *categoriesRepository) ListByCategoryIds(ctx context.Context, categoryIds []primitive.ObjectID, limit int, offset int) ([]*domain.Category, error)

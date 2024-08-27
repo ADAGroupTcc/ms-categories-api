@@ -6,7 +6,7 @@ import (
 )
 
 type Handler interface {
-	GetCategoriesById(c echo.Context) error
+	GetCategoryById(c echo.Context) error
 	List(c echo.Context) error
 }
 
@@ -20,5 +20,5 @@ func New(categoriesService categories.Service) Handler {
 	}
 }
 
-func (h *categoriesHandler) GetCategoriesById(c echo.Context) error
+func (h *categoriesHandler) GetCategoryById(c echo.Context) error
 func (h *categoriesHandler) List(c echo.Context) error
