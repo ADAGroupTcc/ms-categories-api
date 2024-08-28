@@ -10,6 +10,7 @@ import (
 )
 
 type Service interface {
+	Create(ctx context.Context, category *domain.CategoryRequest) (*domain.Category, error)
 	GetCategoryById(ctx context.Context, id string) (*domain.Category, error)
 	List(ctx context.Context, limit int, offset int) (*domain.CategoriesResponse, error)
 	ListByCategoryIds(ctx context.Context, categoryIds []string, limit int, offset int) (*domain.CategoriesResponse, error)
@@ -23,6 +24,15 @@ func New(categoriesRepository categories.Repository) Service {
 	return &categoriesService{
 		categoriesRepository,
 	}
+}
+
+func (s *categoriesService) Create(ctx context.Context, request *domain.CategoryRequest) (*domain.Category, error) {
+	if err := request.Validate(); err != nil {
+		return nil, err
+	}
+	category := request.ToCategory()
+
+	return s.categoriesRepository.Create(ctx, category)
 }
 
 func (s *categoriesService) GetCategoryById(ctx context.Context, id string) (*domain.Category, error) {

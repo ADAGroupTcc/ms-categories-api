@@ -16,6 +16,7 @@ import (
 const CATEGORY_COLLECTION = "categories"
 
 type Repository interface {
+	Create(ctx context.Context, category *domain.Category) (*domain.Category, error)
 	GetCategoryById(ctx context.Context, id primitive.ObjectID) (*domain.Category, error)
 	List(ctx context.Context, limit int64, offset int64) ([]*domain.Category, error)
 	ListByCategoryIds(ctx context.Context, categoryIds []primitive.ObjectID, limit int64, offset int64) ([]*domain.Category, error)
@@ -27,6 +28,16 @@ type categoriesRepository struct {
 
 func New(db *mongo.Database) Repository {
 	return &categoriesRepository{db}
+}
+
+func (r *categoriesRepository) Create(ctx context.Context, category *domain.Category) (*domain.Category, error) {
+	update := category.ToBsonM()
+	filter := bson.M{"name": category.Name}
+	err := category.Update(ctx, r.db, CATEGORY_COLLECTION, filter, update, options.FindOneAndUpdate().SetUpsert(true).SetReturnDocument(options.After))
+	if err != nil {
+		return nil, exceptions.New(exceptions.ErrDatabaseFailure, err)
+	}
+	return category, nil
 }
 
 func (r *categoriesRepository) GetCategoryById(ctx context.Context, id primitive.ObjectID) (*domain.Category, error) {

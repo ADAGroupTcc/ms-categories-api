@@ -11,6 +11,7 @@ import (
 )
 
 type Handler interface {
+	Create(c echo.Context) error
 	GetCategoryById(c echo.Context) error
 	List(c echo.Context) error
 }
@@ -23,6 +24,19 @@ func New(categoriesService categories.Service) Handler {
 	return &categoriesHandler{
 		categoriesService,
 	}
+}
+
+func (h *categoriesHandler) Create(c echo.Context) error {
+	ctx := c.Request().Context()
+	request := new(domain.CategoryRequest)
+	if err := c.Bind(request); err != nil {
+		return exceptions.New(exceptions.ErrInvalidPayload, err)
+	}
+	res, err := h.categoriesService.Create(ctx, request)
+	if err != nil {
+		return err
+	}
+	return c.JSON(http.StatusCreated, res)
 }
 
 func (h *categoriesHandler) GetCategoryById(c echo.Context) error {

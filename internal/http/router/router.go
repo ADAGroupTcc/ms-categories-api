@@ -12,14 +12,13 @@ import (
 func SetupRouter(dependencies *config.Dependencies) *echo.Echo {
 	e := echo.New()
 
-	e.Use(middlewares.ErrorIntercepter())
-
 	e.GET("/health", dependencies.HealthHandler.Check)
 	fmt.Println(primitive.NewObjectID())
 
 	v1 := e.Group("/v1")
-	v1.GET("/categories/:id", dependencies.Handler.GetCategoryById)
-	v1.GET("/categories", dependencies.Handler.List)
+	v1.POST("/categories", dependencies.Handler.Create, middlewares.ErrorIntercepter())
+	v1.GET("/categories/:id", dependencies.Handler.GetCategoryById, middlewares.ErrorIntercepter())
+	v1.GET("/categories", dependencies.Handler.List, middlewares.ErrorIntercepter())
 
 	return e
 }
