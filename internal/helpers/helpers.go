@@ -17,13 +17,15 @@ func BindQueryParams(c echo.Context, queryParams *QueryParams) error {
 type QueryParams struct {
 	RawCategoryIds string `query:"category_ids"`
 	CategoryIDs    []string
-	Limit          int64 `query:"limit"`
-	Offset         int64 `query:"next_page"`
+	Limit          int `query:"limit"`
+	Offset         int `query:"next_page"`
 }
 
 func (q *QueryParams) normalize() {
-	q.CategoryIDs = strings.Split(q.RawCategoryIds, ",")
-	q.RawCategoryIds = ""
+	if q.RawCategoryIds != "" {
+		q.CategoryIDs = strings.Split(q.RawCategoryIds, ",")
+		q.RawCategoryIds = ""
+	}
 	if q.Limit < 1 {
 		q.Limit = 10
 	}

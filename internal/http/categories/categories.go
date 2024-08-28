@@ -3,6 +3,9 @@ package categories
 import (
 	"net/http"
 
+	"github.com/ADAGroupTcc/ms-categories-api/exceptions"
+	"github.com/ADAGroupTcc/ms-categories-api/internal/domain"
+	"github.com/ADAGroupTcc/ms-categories-api/internal/helpers"
 	"github.com/ADAGroupTcc/ms-categories-api/internal/services/categories"
 	"github.com/labstack/echo/v4"
 )
@@ -34,5 +37,25 @@ func (h *categoriesHandler) GetCategoryById(c echo.Context) error {
 }
 
 func (h *categoriesHandler) List(c echo.Context) error {
-	return nil
+	ctx := c.Request().Context()
+	params := helpers.QueryParams{}
+	if err := helpers.BindQueryParams(c, &params); err != nil {
+		return exceptions.New(exceptions.ErrInvalidPayload, err)
+	}
+
+	var res *domain.CategoriesResponse
+	var err error
+	if len(params.CategoryIDs) < 1 {
+		res, err = h.categoriesService.List(ctx, params.Limit, params.Offset)
+		if err != nil {
+			return err
+		}
+	} else {
+		res, err = h.categoriesService.ListByCategoryIds(ctx, params.CategoryIDs, params.Limit, params.Offset)
+		if err != nil {
+			return err
+		}
+	}
+
+	return c.JSON(http.StatusOK, res)
 }
