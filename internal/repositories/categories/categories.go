@@ -18,7 +18,7 @@ const CATEGORY_COLLECTION = "categories"
 type Repository interface {
 	GetCategoryById(ctx context.Context, id primitive.ObjectID) (*domain.Category, error)
 	List(ctx context.Context, limit int64, offset int64) ([]*domain.Category, error)
-	ListByCategoryIds(ctx context.Context, categoryIds []primitive.ObjectID, limit int, offset int) ([]*domain.Category, error)
+	ListByCategoryIds(ctx context.Context, categoryIds []primitive.ObjectID, limit int64, offset int64) ([]*domain.Category, error)
 }
 
 type categoriesRepository struct {
@@ -54,6 +54,15 @@ func (r *categoriesRepository) List(ctx context.Context, limit int64, offset int
 	return categories, nil
 }
 
-func (r *categoriesRepository) ListByCategoryIds(ctx context.Context, categoryIds []primitive.ObjectID, limit int, offset int) ([]*domain.Category, error) {
-	return nil, nil
+func (r *categoriesRepository) ListByCategoryIds(ctx context.Context, categoryIds []primitive.ObjectID, limit int64, offset int64) ([]*domain.Category, error) {
+	var categories []*domain.Category = make([]*domain.Category, 0)
+	filter := bson.M{"_id": bson.M{"$in": categoryIds}}
+	err := mongorm.List(ctx, r.db, CATEGORY_COLLECTION, filter, &categories, options.Find().SetLimit(limit).SetSkip(offset*limit))
+	if err != nil {
+		if errors.Is(err, mongo.ErrNoDocuments) {
+			return categories, nil
+		}
+		return nil, exceptions.New(exceptions.ErrDatabaseFailure, err)
+	}
+	return categories, nil
 }
