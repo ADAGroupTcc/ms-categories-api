@@ -1,6 +1,7 @@
 package exceptions
 
 import (
+	"fmt"
 	"net/http"
 )
 
@@ -10,6 +11,7 @@ type ErrorResponse struct {
 }
 
 func HandleExceptions(err error) ErrorResponse {
+	fmt.Print(err.Error())
 	customErr, ok := err.(*Error)
 	if !ok {
 		return ErrorResponse{
