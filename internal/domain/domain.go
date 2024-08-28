@@ -14,8 +14,8 @@ type Category struct {
 }
 
 type CategoriesResponse struct {
-	Categories []Category `json:"categories"`
-	NextPage   int64      `json:"next_page,omitempty"`
+	Categories []*Category `json:"categories"`
+	NextPage   int         `json:"next_page,omitempty"`
 }
 
 type CategoryRequest struct {

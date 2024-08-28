@@ -34,7 +34,17 @@ func (s *categoriesService) GetCategoryById(ctx context.Context, id string) (*do
 }
 
 func (s *categoriesService) List(ctx context.Context, limit int, offset int) (*domain.CategoriesResponse, error) {
-	return nil, nil
+	listResponse, err := s.categoriesRepository.List(ctx, int64(limit), int64(offset))
+	if err != nil {
+		return nil, err
+	}
+	res := &domain.CategoriesResponse{
+		Categories: listResponse,
+	}
+	if len(listResponse) == limit {
+		res.NextPage = offset + 1
+	}
+	return res, nil
 }
 
 func (s *categoriesService) ListByCategoryIds(ctx context.Context, categoryIds []string, limit int, offset int) (*domain.CategoriesResponse, error) {
